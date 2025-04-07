@@ -12,11 +12,17 @@ public class ClickToLookWalkerWithMinimap : MonoBehaviour
 
 
     [Header("Mouse Look")]
+    float cameraPitch = 0.0f;
+    [SerializeField] Transform playerCamera = null;
+    [SerializeField][Range(0.0f, 0.5f)] float mouseSmoothTime = 0.03f;
     public float mouseSensitivity = 2f;
     public Transform head;
-    private bool isLooking = false;
+    // private bool isLooking = false;
     private float rotationX = 0f;
     private float rotationY = 0f;
+    bool lockCursor = true;
+    Vector2 currentMouseDelta = Vector2.zero;
+    Vector2 currentMouseDeltaVelocity = Vector2.zero;
 
     [Header("Look Limits")]
     public float minPitch = -15f; // look all the way down
@@ -47,6 +53,12 @@ public class ClickToLookWalkerWithMinimap : MonoBehaviour
 
     void Start()
     {
+        if (lockCursor)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+
         controller = GetComponent<CharacterController>();
 
         if (!head || !minimapCamera || !minimapDot || !minimapQuad)
@@ -67,21 +79,22 @@ public class ClickToLookWalkerWithMinimap : MonoBehaviour
     void Update()
     {
         // --- Mouse Look ---
-        if (Input.GetMouseButtonDown(0)) isLooking = true;
-        if (Input.GetMouseButtonUp(0)) isLooking = false;
+        UpdateMouseLook();
+        // if (Input.GetMouseButtonDown(0)) isLooking = true;
+        // if (Input.GetMouseButtonUp(0)) isLooking = false;
 
-        if (isLooking)
-        {
-            float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
-            float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
+        // if (isLooking)
+        // {
+        //     float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
+        //     float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
 
-            rotationY += mouseX;
-            rotationX -= mouseY;
-            rotationX = Mathf.Clamp(rotationX, minPitch, maxPitch);
+        //     rotationY += mouseX;
+        //     rotationX -= mouseY;
+        //     rotationX = Mathf.Clamp(rotationX, minPitch, maxPitch);
 
-            transform.localRotation = Quaternion.Euler(0, rotationY, 0);
-            head.localRotation = Quaternion.Euler(rotationX, 0, 0);
-        }
+        //     transform.localRotation = Quaternion.Euler(0, rotationY, 0);
+        //     head.localRotation = Quaternion.Euler(rotationX, 0, 0);
+        // }
 
         // --- Movement ---
         float h = Input.GetAxis("Horizontal");
@@ -137,5 +150,20 @@ public class ClickToLookWalkerWithMinimap : MonoBehaviour
 
         // --- Minimap Camera Follow ---
         minimapCamera.transform.position = new Vector3(transform.position.x, minimapCamera.transform.position.y, transform.position.z);
+    }
+
+    void UpdateMouseLook()
+    {
+        Vector2 targetMosueDelta = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
+
+        currentMouseDelta = Vector2.SmoothDamp(currentMouseDelta, targetMosueDelta, ref currentMouseDeltaVelocity, mouseSmoothTime);
+
+        cameraPitch -= currentMouseDelta.y * mouseSensitivity;
+
+        cameraPitch = Mathf.Clamp(cameraPitch, -90.0f, 90.0f);
+
+        playerCamera.localEulerAngles = Vector2.right * cameraPitch;
+
+        transform.Rotate(Vector3.up * currentMouseDelta.x * mouseSensitivity);
     }
 }
