@@ -1,12 +1,18 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class TeleportWithFade : MonoBehaviour
 {
     [Header("Teleport Zones")]
     public Collider zoneACollider;
     public Collider zoneBCollider;
+
+    [Header("Zone Text Prompts")]
+    public TextMeshProUGUI zoneAText;
+    public TextMeshProUGUI zoneBText;
+
 
     [Header("Destinations")]
     public Vector3 destinationFromZoneA;
@@ -78,17 +84,35 @@ public class TeleportWithFade : MonoBehaviour
 
     void ShowTeleportPrompt()
     {
-        playerInZone = true; // ⭐ enable input
+        playerInZone = true;
+
         if (teleportButton != null)
             teleportButton.SetActive(true);
+
+        if (targetDestination == destinationFromZoneA)
+        {
+            if (zoneAText != null) zoneAText.gameObject.SetActive(true);
+            if (zoneBText != null) zoneBText.gameObject.SetActive(false);
+        }
+        else if (targetDestination == destinationFromZoneB)
+        {
+            if (zoneAText != null) zoneAText.gameObject.SetActive(false);
+            if (zoneBText != null) zoneBText.gameObject.SetActive(true);
+        }
     }
+
 
     void HideTeleportPrompt()
     {
-        playerInZone = false; // ⭐ disable input
+        playerInZone = false;
+
         if (teleportButton != null)
             teleportButton.SetActive(false);
+
+        if (zoneAText != null) zoneAText.gameObject.SetActive(false);
+        if (zoneBText != null) zoneBText.gameObject.SetActive(false);
     }
+
 
     IEnumerator FadeAndTeleport(Vector3 destination, bool enableUIQuad)
     {
