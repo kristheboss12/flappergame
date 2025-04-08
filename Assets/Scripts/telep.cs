@@ -9,6 +9,15 @@ public class TeleportWithFade : MonoBehaviour
     public Collider zoneACollider;
     public Collider zoneBCollider;
 
+    [Header("Progress Control")]
+    public bool teleportUnlocked = false; // 🟢 Set to true after dialogue
+    public bool teleportUsedOnce = false; // 🟢 Prevent future use if needed
+    public DialogueController outsideDialogue; // The dialogue to trigger when arriving
+    [TextArea] public string outsideDialogueLine;
+    public bool photoEventCompleted = false;      // ✅ Set true when photo is done
+    private bool outsideDialogueTriggered = false; // ✅ Trigger once after going outside
+
+
     [Header("Zone Text Prompts")]
     public TextMeshProUGUI zoneAText;
     public TextMeshProUGUI zoneBText;
@@ -48,13 +57,15 @@ public class TeleportWithFade : MonoBehaviour
     {
         if (playerInZone && canTeleport && !isFading)
         {
-            if (Input.GetKeyDown(KeyCode.E)) // ⭐ Press E to teleport
+            if (Input.GetKeyDown(KeyCode.E))
             {
                 StartCoroutine(FadeAndTeleport(targetDestination, targetUIQuadState));
                 HideTeleportPrompt();
             }
         }
+
     }
+
 
     void OnTriggerEnter(Collider other)
     {
@@ -154,6 +165,15 @@ public class TeleportWithFade : MonoBehaviour
 
         canTeleport = true;
         isFading = false;
+
+        // Trigger outside dialogue only the first time, and only if photo event is done
+        if (!outsideDialogueTriggered && photoEventCompleted && enableUIQuad && outsideDialogue != null)
+        {
+            outsideDialogueTriggered = true;
+            outsideDialogue.ShowDialogue(outsideDialogueLine);
+        }
+
+
     }
 
 
