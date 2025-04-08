@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,12 +19,36 @@ public class TeleportWithFade : MonoBehaviour
     [Header("Options")]
     public float teleportCooldown = 0.5f;
     public bool rotateOnTeleport = true;
-    public GameObject UIQuad; // Assign the UI quad
-    public bool showUIQuadWhenGoingToZoneA = true; // toggle based on direction
-    public MonoBehaviour movementScript; // Your movement script (optional)
+    public GameObject UIQuad;
+    public bool showUIQuadWhenGoingToZoneA = true;
+    public MonoBehaviour movementScript;
+
+    [Header("Teleport UI")]
+    public GameObject teleportButton; // Acts as an on-screen prompt
+    private Vector3 targetDestination;
+    private bool targetUIQuadState;
+    private bool playerInZone = false; // ⭐ Track if player is inside a zone
 
     private bool canTeleport = true;
     private bool isFading = false;
+
+    void Start()
+    {
+        if (teleportButton != null)
+            teleportButton.SetActive(false);
+    }
+
+    void Update()
+    {
+        if (playerInZone && canTeleport && !isFading)
+        {
+            if (Input.GetKeyDown(KeyCode.E)) // ⭐ Press E to teleport
+            {
+                StartCoroutine(FadeAndTeleport(targetDestination, targetUIQuadState));
+                HideTeleportPrompt();
+            }
+        }
+    }
 
     void OnTriggerEnter(Collider other)
     {
@@ -32,14 +56,38 @@ public class TeleportWithFade : MonoBehaviour
 
         if (other == zoneACollider)
         {
-            Debug.Log("Teleporting to Zone B...");
-            StartCoroutine(FadeAndTeleport(destinationFromZoneA, false)); // Going TO Zone B
+            targetDestination = destinationFromZoneA;
+            targetUIQuadState = false;
+            ShowTeleportPrompt();
         }
         else if (other == zoneBCollider)
         {
-            Debug.Log("Teleporting to Zone A...");
-            StartCoroutine(FadeAndTeleport(destinationFromZoneB, true)); // Going TO Zone A
+            targetDestination = destinationFromZoneB;
+            targetUIQuadState = true;
+            ShowTeleportPrompt();
         }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other == zoneACollider || other == zoneBCollider)
+        {
+            HideTeleportPrompt();
+        }
+    }
+
+    void ShowTeleportPrompt()
+    {
+        playerInZone = true; // ⭐ enable input
+        if (teleportButton != null)
+            teleportButton.SetActive(true);
+    }
+
+    void HideTeleportPrompt()
+    {
+        playerInZone = false; // ⭐ disable input
+        if (teleportButton != null)
+            teleportButton.SetActive(false);
     }
 
     IEnumerator FadeAndTeleport(Vector3 destination, bool enableUIQuad)
@@ -47,14 +95,11 @@ public class TeleportWithFade : MonoBehaviour
         isFading = true;
         canTeleport = false;
 
-        // Disable movement if needed
         if (movementScript != null)
             movementScript.enabled = false;
 
-        // Fade out
         yield return StartCoroutine(Fade(0f, 1f));
 
-        // Teleport and rotate
         CharacterController controller = GetComponent<CharacterController>();
         if (controller != null) controller.enabled = false;
 
@@ -67,17 +112,13 @@ public class TeleportWithFade : MonoBehaviour
 
         if (controller != null) controller.enabled = true;
 
-        // Update UI Quad
         if (UIQuad != null)
             UIQuad.SetActive(enableUIQuad);
 
-        // Wait a moment before fading back in
         yield return new WaitForSeconds(teleportCooldown);
 
-        // Fade in
         yield return StartCoroutine(Fade(1f, 0f));
 
-        // Re-enable movement
         if (movementScript != null)
             movementScript.enabled = true;
 
