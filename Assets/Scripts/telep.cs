@@ -122,8 +122,13 @@ public class TeleportWithFade : MonoBehaviour
         if (movementScript != null)
             movementScript.enabled = false;
 
+        // 🔻 HIDE minimap immediately if we're teleporting to Zone B
+        if (UIQuad != null && !enableUIQuad)
+            UIQuad.SetActive(false);
+
         yield return StartCoroutine(Fade(0f, 1f));
 
+        // Temporarily disable CharacterController to avoid conflict during teleport
         CharacterController controller = GetComponent<CharacterController>();
         if (controller != null) controller.enabled = false;
 
@@ -136,9 +141,6 @@ public class TeleportWithFade : MonoBehaviour
 
         if (controller != null) controller.enabled = true;
 
-        if (UIQuad != null)
-            UIQuad.SetActive(enableUIQuad);
-
         yield return new WaitForSeconds(teleportCooldown);
 
         yield return StartCoroutine(Fade(1f, 0f));
@@ -146,9 +148,14 @@ public class TeleportWithFade : MonoBehaviour
         if (movementScript != null)
             movementScript.enabled = true;
 
+        // 🔺 SHOW minimap after fade-in if we're teleporting to Zone A
+        if (UIQuad != null && enableUIQuad)
+            UIQuad.SetActive(true);
+
         canTeleport = true;
         isFading = false;
     }
+
 
     IEnumerator Fade(float startAlpha, float endAlpha)
     {
