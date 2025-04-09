@@ -47,6 +47,10 @@ public class TeleportWithFade : MonoBehaviour
     private bool canTeleport = true;
     private bool isFading = false;
 
+    [Header("Activation Condition")]
+    public GameObject requiredObjectToBeActive; // Assign in Inspector
+
+
     void Start()
     {
         if (teleportButton != null)
@@ -95,6 +99,13 @@ public class TeleportWithFade : MonoBehaviour
 
     void ShowTeleportPrompt()
     {
+        // ✅ Check if the required object is set to active, ignoring parent states
+        if (requiredObjectToBeActive != null && !requiredObjectToBeActive.activeSelf)
+        {
+            Debug.Log("⛔ Teleport prompt blocked — required object is not set to active.");
+            return;
+        }
+
         playerInZone = true;
 
         if (teleportButton != null)
@@ -110,7 +121,10 @@ public class TeleportWithFade : MonoBehaviour
             if (zoneAText != null) zoneAText.gameObject.SetActive(false);
             if (zoneBText != null) zoneBText.gameObject.SetActive(true);
         }
+
+        Debug.Log("✅ Teleport prompt shown.");
     }
+
 
 
     void HideTeleportPrompt()
@@ -166,14 +180,41 @@ public class TeleportWithFade : MonoBehaviour
         canTeleport = true;
         isFading = false;
 
-        // Trigger outside dialogue only the first time, and only if photo event is done
         if (!outsideDialogueTriggered && photoEventCompleted && enableUIQuad && outsideDialogue != null)
         {
+            Debug.Log("✅ Conditions met — starting outside dialogue coroutine");
             outsideDialogueTriggered = true;
-            outsideDialogue.ShowDialogue(outsideDialogueLine);
+            StartCoroutine(TriggerOutsideDialogueAfterDelay());
+        }
+        else
+        {
+            Debug.Log($"❌ Outside dialogue skipped. Triggered: {outsideDialogueTriggered}, photoDone: {photoEventCompleted}, outside: {enableUIQuad}, hasController: {outsideDialogue != null}");
         }
 
 
+
+
+    }
+
+
+    IEnumerator TriggerOutsideDialogueAfterDelay()
+    {
+        yield return new WaitForSeconds(0.25f); // give the scene a moment to settle
+
+        if (outsideDialogue == null)
+        {
+            Debug.LogWarning("⚠️ No outsideDialogue assigned.");
+            yield break;
+        }
+
+        if (string.IsNullOrEmpty(outsideDialogueLine))
+        {
+            Debug.LogWarning("⚠️ outsideDialogueLine is empty.");
+            yield break;
+        }
+
+        Debug.Log("🗣 Showing outside dialogue: " + outsideDialogueLine);
+        outsideDialogue.ShowDialogue(outsideDialogueLine);
     }
 
 

@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -29,6 +29,18 @@ public class NPCDialogueSequence : MonoBehaviour
         }
 
         if (nextPhotoTrigger != null)
-            nextPhotoTrigger.SetActive(true); // Enable the photo object or its collider
+        {
+            MonoBehaviour photoScript = nextPhotoTrigger.GetComponent<SimplePhotoCapture>();
+            if (photoScript != null)
+            {
+                photoScript.enabled = true;
+                Debug.Log("✅ Second photo capture is now enabled.");
+            }
+            else
+            {
+                Debug.LogWarning("⚠️ SimplePhotoCapture script not found on nextPhotoTrigger.");
+            }
+        }
+
     }
 }

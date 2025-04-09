@@ -1,27 +1,31 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 
 public class DialogueController : MonoBehaviour
 {
-    public Image backgroundImage;             // UI image for the dialogue background
-    public TextMeshProUGUI dialogueText;      // Text component
+    public Image backgroundImage;
+    public TextMeshProUGUI dialogueText;
     public float typeSpeed = 0.05f;
     public float holdTime = 2f;
     public float fadeTime = 0.5f;
-    [Range(0f, 1f)] public float imageMaxAlpha = 0.5f; // Max opacity for the panel background
+    [Range(0f, 1f)] public float imageMaxAlpha = 0.5f;
 
     private Coroutine currentDialogue;
+    private Queue<(string, Action)> dialogueQueue = new Queue<(string, Action)>();
+    private bool isPlaying = false;
 
-    public void ShowDialogue(string line)
+    public void ShowDialogue(string line, Action onComplete = null)
     {
-        if (currentDialogue != null)
-        {
-            StopCoroutine(currentDialogue);
-        }
+        dialogueQueue.Enqueue((line, onComplete));
 
-        currentDialogue = StartCoroutine(PlayDialogue(line));
+        if (currentDialogue == null)
+        {
+            currentDialogue = StartCoroutine(PlayQueue());
+        }
     }
 
     public bool IsReady()
@@ -29,13 +33,25 @@ public class DialogueController : MonoBehaviour
         return currentDialogue == null;
     }
 
+    IEnumerator PlayQueue()
+    {
+        isPlaying = true;
 
-    IEnumerator PlayDialogue(string line)
+        while (dialogueQueue.Count > 0)
+        {
+            var (line, callback) = dialogueQueue.Dequeue();
+            yield return StartCoroutine(PlayDialogue(line, callback));
+        }
+
+        isPlaying = false;
+        currentDialogue = null;
+    }
+
+    IEnumerator PlayDialogue(string line, Action onComplete)
     {
         backgroundImage.gameObject.SetActive(true);
         dialogueText.gameObject.SetActive(true);
 
-        // Set initial colors with 0 alpha
         Color textColor = dialogueText.color;
         Color imageColor = backgroundImage.color;
 
@@ -92,6 +108,6 @@ public class DialogueController : MonoBehaviour
         backgroundImage.gameObject.SetActive(false);
         dialogueText.gameObject.SetActive(false);
 
-        currentDialogue = null;
+        onComplete?.Invoke();
     }
 }

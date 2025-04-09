@@ -1,9 +1,9 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class DialogueTriggerZone : MonoBehaviour
 {
     [TextArea] public string dialogueLine;
-    public DialogueController dialogueController;
+    public IntroDialogueManager manager;
     private bool triggered = false;
 
     void OnTriggerEnter(Collider other)
@@ -11,7 +11,7 @@ public class DialogueTriggerZone : MonoBehaviour
         if (!triggered && other.CompareTag("Player"))
         {
             triggered = true;
-            dialogueController.ShowDialogue(dialogueLine);
+            manager.TriggerDialogue(dialogueLine);
         }
     }
 }

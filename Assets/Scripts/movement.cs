@@ -23,6 +23,8 @@ public class ClickToLookWalkerWithMinimap : MonoBehaviour
     bool lockCursor = true;
     Vector2 currentMouseDelta = Vector2.zero;
     Vector2 currentMouseDeltaVelocity = Vector2.zero;
+    public static bool JournalIsOpen = false;
+
 
     [Header("Look Limits")]
     public float minPitch = -15f;
@@ -73,8 +75,9 @@ public class ClickToLookWalkerWithMinimap : MonoBehaviour
 
     void Update()
     {
-        if (IsInteractingWithMap)
-            return; // 🛑 Skip all movement when interacting with map
+        if (IsInteractingWithMap || JournalIsOpen)
+            return; // 🛑 Skip all movement and camera input when journal is open or map is active
+
 
         UpdateMouseLook();
 
