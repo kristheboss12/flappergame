@@ -2,31 +2,48 @@
 
 public class JournalToggle1 : MonoBehaviour
 {
-    public GameObject journalCanvas;                    // Drag your journal UI canvas here
-    public DialogueController dialogueController;       // Drag your dialogue controller here
-    public MonoBehaviour movementScript;                // Drag your movement script here (ClickToLookWalkerWithMinimap)
+    public GameObject journalCanvas;
+    public DialogueController dialogueController;
+    public MonoBehaviour movementScript;
 
     private bool isOpen = false;
+    private bool waitingToClose = false;
 
     void Update()
     {
-        // Automatically close journal during dialogue
         if (dialogueController != null && !dialogueController.IsReady())
         {
-            if (isOpen)
+            if (isOpen && !waitingToClose)
             {
-                ToggleJournal(false);
-                Debug.Log("📖 Journal closed due to dialogue.");
+                waitingToClose = true;
+                StartCoroutine(CloseJournalDelayed(0.1f));
             }
             return;
         }
 
-        // Toggle with J
         if (Input.GetKeyDown(KeyCode.J))
         {
             ToggleJournal(!isOpen);
         }
     }
+
+    System.Collections.IEnumerator CloseJournalDelayed(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        ToggleJournal(false);
+        waitingToClose = false;
+        Debug.Log("📖 Journal closed due to dialogue.");
+    }
+
+    public void ForceCloseJournal()
+    {
+        if (isOpen)
+        {
+            ToggleJournal(false);
+            Debug.Log("📖 Journal auto-closed by script.");
+        }
+    }
+
 
     void ToggleJournal(bool open)
     {
@@ -35,7 +52,7 @@ public class JournalToggle1 : MonoBehaviour
 
         if (movementScript != null)
         {
-            movementScript.enabled = !isOpen; // Fully disable movement script
+            movementScript.enabled = !isOpen;
         }
 
         Cursor.visible = isOpen;
@@ -43,4 +60,6 @@ public class JournalToggle1 : MonoBehaviour
 
         Debug.Log("📖 Journal " + (isOpen ? "opened" : "closed"));
     }
+
+    public bool IsJournalOpen => isOpen;
 }

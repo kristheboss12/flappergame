@@ -14,6 +14,11 @@ public class SimplePhotoCapture : MonoBehaviour
     private Collider myCollider;
     public GameObject permanentObjectToActivate; // Assign this in the Inspector
 
+    [Header("Audio")]
+    public AudioSource photoAudioSource;
+    public AudioClip flashSound;
+
+
 
     void Start()
     {
@@ -103,6 +108,12 @@ public class SimplePhotoCapture : MonoBehaviour
 
         if (whiteFlash != null)
         {
+            // 🎵 Play flash sound
+            if (photoAudioSource != null && flashSound != null)
+            {
+                photoAudioSource.PlayOneShot(flashSound);
+            }
+
             flashImage = whiteFlash.GetComponent<Image>();
             if (flashImage != null)
             {
@@ -110,6 +121,7 @@ public class SimplePhotoCapture : MonoBehaviour
                 flashImage.color = new Color(1f, 1f, 1f, 1f); // Full white instantly
             }
         }
+
 
         // Show the photo at the same time as the flash
         if (photoImage != null)

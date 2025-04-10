@@ -1,17 +1,16 @@
 ﻿using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using System.Collections;
+
 
 public class KnockToEnter : MonoBehaviour
 {
     [Header("UI Elements")]
-    public GameObject knockPromptUI; // Assign your TMP UI (e.g., "Press E to Knock")
-
-    [Header("Player")]
-    public Transform player; // Assign the player Transform in the Inspector
+    public GameObject knockPromptUI;
 
     [Header("Settings")]
-    public float triggerRadius = 2f; // Adjust based on how close they need to be
     public string sceneToLoad;
 
     private bool playerInside = false;
@@ -20,35 +19,28 @@ public class KnockToEnter : MonoBehaviour
     private bool waitingForPause = false;
     private float knockResetDelay = 2f;
 
+    [Header("Fade")]
+    public Image fadeImage; // Drag your FadePanel Image here
+    public float fadeDuration = 1f;
+
+    [Header("Audio")]
+    public AudioSource knockAudioSource;
+    public AudioClip knockClip;
+
+
+
     void Update()
     {
-        if (player == null) return;
-
-        float distance = Vector3.Distance(transform.position, player.position);
-        bool isInsideNow = distance <= triggerRadius;
-
-        // Handle entering and exiting
-        if (isInsideNow && !playerInside)
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            playerInside = true;
-            if (knockPromptUI != null)
-                knockPromptUI.SetActive(true);
-        }
-        else if (!isInsideNow && playerInside)
-        {
-            playerInside = false;
-            if (knockPromptUI != null)
-                knockPromptUI.SetActive(false);
-            ResetKnocks();
+            Debug.Log(playerInside
+                ? "👊 E pressed inside knock zone."
+                : "❌ E pressed outside knock zone.");
+
+            if (playerInside)
+                RegisterKnock();
         }
 
-        // Knock input
-        if (playerInside && Input.GetKeyDown(KeyCode.E))
-        {
-            RegisterKnock();
-        }
-
-        // Knock resolution check
         if (waitingForPause && Time.time - lastKnockTime >= knockResetDelay)
         {
             if (knockCount == 3)
@@ -64,11 +56,37 @@ public class KnockToEnter : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            playerInside = true;
+            knockPromptUI?.SetActive(true);
+            Debug.Log("🟢 Player entered knock zone.");
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            playerInside = false;
+            knockPromptUI?.SetActive(false);
+            ResetKnocks();
+            Debug.Log("🔴 Player exited knock zone.");
+        }
+    }
+
     void RegisterKnock()
     {
         knockCount++;
         lastKnockTime = Time.time;
         waitingForPause = true;
+
+        if (knockAudioSource != null && knockClip != null)
+        {
+            knockAudioSource.PlayOneShot(knockClip);
+        }
 
         Debug.Log($"🔊 Knock #{knockCount}");
 
@@ -78,15 +96,39 @@ public class KnockToEnter : MonoBehaviour
         }
     }
 
+
     void ResetKnocks()
     {
         knockCount = 0;
         waitingForPause = false;
+        Debug.Log("🔁 Knock sequence reset.");
     }
 
     void LoadFinalScene()
     {
         ResetKnocks();
+        StartCoroutine(FadeAndLoadScene());
+    }
+
+    IEnumerator FadeAndLoadScene()
+    {
+        if (fadeImage != null)
+        {
+            fadeImage.gameObject.SetActive(true);
+            Color color = fadeImage.color;
+
+            float timer = 0f;
+            while (timer < fadeDuration)
+            {
+                timer += Time.deltaTime;
+                float alpha = Mathf.Clamp01(timer / fadeDuration);
+                fadeImage.color = new Color(color.r, color.g, color.b, alpha);
+                yield return null;
+            }
+        }
+
+        Debug.Log($"🌒 Fade complete. Loading scene: {sceneToLoad}");
         SceneManager.LoadScene(sceneToLoad);
     }
+
 }

@@ -50,6 +50,11 @@ public class TeleportWithFade : MonoBehaviour
     [Header("Activation Condition")]
     public GameObject requiredObjectToBeActive; // Assign in Inspector
 
+    [Header("Ambient Audio")]
+public AudioSource ambientOutsideSource;
+public AudioClip ambientOutsideClip;
+
+
 
     void Start()
     {
@@ -150,6 +155,27 @@ public class TeleportWithFade : MonoBehaviour
         // 🔻 HIDE minimap immediately if we're teleporting to Zone B
         if (UIQuad != null && !enableUIQuad)
             UIQuad.SetActive(false);
+
+        // 🎵 Ambient sound logic
+        if (ambientOutsideSource != null)
+        {
+            if (enableUIQuad) // going outside
+            {
+                if (!ambientOutsideSource.isPlaying)
+                {
+                    ambientOutsideSource.clip = ambientOutsideClip;
+                    ambientOutsideSource.Play();
+                }
+            }
+            else // going inside
+            {
+                if (ambientOutsideSource.isPlaying)
+                {
+                    ambientOutsideSource.Stop();
+                }
+            }
+        }
+
 
         yield return StartCoroutine(Fade(0f, 1f));
 

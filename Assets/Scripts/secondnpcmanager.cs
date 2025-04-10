@@ -11,6 +11,11 @@ public class SecondNPCDialogueTrigger : MonoBehaviour
     public GameObject permanentObjectToActivate;
     private bool triggered = false;
 
+    [Header("Audio")]
+    public AudioSource photoAudioSource;
+    public AudioClip flashSound;
+
+
     void Start()
     {
         if (whiteFlash != null)
@@ -45,6 +50,12 @@ public class SecondNPCDialogueTrigger : MonoBehaviour
     {
         if (whiteFlash != null)
         {
+            // 🎵 Play flash sound
+            if (photoAudioSource != null && flashSound != null)
+            {
+                photoAudioSource.PlayOneShot(flashSound);
+            }
+
             whiteFlash.SetActive(true);
             Image flashImage = whiteFlash.GetComponent<Image>();
             if (flashImage != null)

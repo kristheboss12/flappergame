@@ -25,6 +25,13 @@ public class ClickToLookWalkerWithMinimap : MonoBehaviour
     Vector2 currentMouseDeltaVelocity = Vector2.zero;
     public static bool JournalIsOpen = false;
 
+    [Header("Audio")]
+    public AudioSource footstepsSource;
+    public AudioClip footstepsClip;
+    public float walkPitch = 1f;
+    public float sprintPitch = 1.5f;
+
+
 
     [Header("Look Limits")]
     public float minPitch = -15f;
@@ -66,6 +73,14 @@ public class ClickToLookWalkerWithMinimap : MonoBehaviour
             return;
         }
 
+        if (footstepsSource != null && footstepsClip != null)
+        {
+            footstepsSource.clip = footstepsClip;
+            footstepsSource.loop = true;
+        }
+
+
+
         headStartPos = head.localPosition;
 
         Vector3 initialRotation = transform.rotation.eulerAngles;
@@ -76,33 +91,41 @@ public class ClickToLookWalkerWithMinimap : MonoBehaviour
     void Update()
     {
         if (IsInteractingWithMap || JournalIsOpen)
-            return; // 🛑 Skip all movement and camera input when journal is open or map is active
-
+            return;
 
         UpdateMouseLook();
 
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
         Vector3 moveInput = new Vector3(h, 0, v);
+        bool isMoving = moveInput.magnitude > 0.1f;
 
         float currentSpeed = moveSpeed;
-        if (Input.GetKey(KeyCode.LeftShift) && moveInput.magnitude > 0.1f)
+
+        // Sprint logic
+        bool isSprinting = Input.GetKey(KeyCode.LeftShift) && isMoving;
+        if (isSprinting)
             currentSpeed *= sprintMultiplier;
 
         Vector3 move = transform.TransformDirection(moveInput.normalized) * currentSpeed;
 
+        // Gravity and jump
         if (controller.isGrounded)
         {
             verticalVelocity = -1f;
-            if (Input.GetButtonDown("Jump")) verticalVelocity = jumpForce;
+            if (Input.GetButtonDown("Jump"))
+                verticalVelocity = jumpForce;
         }
-        else verticalVelocity -= gravity * Time.deltaTime;
+        else
+        {
+            verticalVelocity -= gravity * Time.deltaTime;
+        }
 
         move.y = verticalVelocity;
         controller.Move(move * Time.deltaTime);
 
-        // Head bobbing / idle sway
-        if (moveInput.magnitude > 0.1f)
+        // Head bobbing and idle sway
+        if (isMoving)
         {
             bobbingTimer += Time.deltaTime * bobbingFrequency;
             float bobbingOffset = Mathf.Sin(bobbingTimer) * bobbingAmplitude;
@@ -117,11 +140,28 @@ public class ClickToLookWalkerWithMinimap : MonoBehaviour
             bobbingTimer = 0f;
         }
 
-        // Update dot and camera position
+        // Footstep audio control
+        if (footstepsSource != null)
+        {
+            if (isMoving && controller.isGrounded)
+            {
+                footstepsSource.pitch = isSprinting ? sprintPitch : walkPitch;
+                if (!footstepsSource.isPlaying)
+                    footstepsSource.Play();
+            }
+            else
+            {
+                if (footstepsSource.isPlaying)
+                    footstepsSource.Stop();
+            }
+        }
+
+        // Minimap tracking
         Vector3 pos = transform.position;
         minimapDot.position = new Vector3(pos.x, minimapDot.position.y, pos.z);
         minimapCamera.transform.position = new Vector3(pos.x, minimapCamera.transform.position.y, pos.z);
     }
+
 
 
     void UpdateMouseLook()

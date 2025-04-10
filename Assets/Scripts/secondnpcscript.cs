@@ -13,8 +13,6 @@ public class TriggerNextNPCSequence : MonoBehaviour
     [Header("Button Choice")]
     public GameObject button1;
     public GameObject button2;
-
-    [Tooltip("Only this button is required to continue.")]
     public GameObject requiredButton;
 
     [Header("Optional Triggers")]
@@ -25,14 +23,32 @@ public class TriggerNextNPCSequence : MonoBehaviour
     public bool isFinalObject = false;
 
     private bool started = false;
-    private bool journalOpened = false;
     private bool correctButtonClicked = false;
+    private bool waitingForDialogueTrigger = false;
+    private bool dialogueTriggered = false;
+    public JournalToggle1 journalToggle; // drag it in the Inspector!
+
+
 
     void OnEnable()
     {
         StartCoroutine(StartSequence());
     }
 
+    void Update()
+    {
+        if (correctButtonClicked && !waitingForDialogueTrigger && Input.GetKeyDown(KeyCode.J))
+        {
+            Debug.Log("⏩ J pressed after required button. Waiting for journal to close...");
+            waitingForDialogueTrigger = true;
+        }
+
+        if (waitingForDialogueTrigger && !dialogueTriggered && journalToggle != null && !journalToggle.IsJournalOpen)
+        {
+            Debug.Log("✅ Journal is closed. Triggering dialogue.");
+            TriggerFinalDialogue();
+        }
+    }
 
 
     public IEnumerator StartSequence()
@@ -41,8 +57,6 @@ public class TriggerNextNPCSequence : MonoBehaviour
         started = true;
 
         Debug.Log($"{gameObject.name}: StartSequence coroutine called.");
-
-        // Wait one frame to make sure all UI is active and stable
         yield return null;
 
         if (dialogueController != null && !string.IsNullOrEmpty(afterGiftDialogue))
@@ -59,7 +73,6 @@ public class TriggerNextNPCSequence : MonoBehaviour
 
     void ShowButtons()
     {
-        // Ensure both buttons are visible
         if (button1 != null) button1.SetActive(true);
         if (button2 != null) button2.SetActive(true);
 
@@ -86,22 +99,28 @@ public class TriggerNextNPCSequence : MonoBehaviour
         if (clickedButton == requiredButton)
         {
             correctButtonClicked = true;
-
-            Debug.Log("✅ Required button clicked. Waiting 5 seconds...");
-            StartCoroutine(DelayedFinalDialogue());
-        }
-        else
-        {
-            // Wrong button, but it just sits there now — no messages, no effects.
+            Debug.Log("✅ Required button clicked. Closing journal after 3 seconds...");
+            StartCoroutine(CloseJournalThenTriggerDialogue());
         }
     }
 
 
-
-
-    IEnumerator DelayedFinalDialogue()
+    IEnumerator CloseJournalThenTriggerDialogue()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(3f);
+
+        if (journalToggle != null && journalToggle.IsJournalOpen)
+        {
+            journalToggle.ForceCloseJournal(); // We'll add this next
+        }
+
+        TriggerFinalDialogue();
+    }
+
+    void TriggerFinalDialogue()
+    {
+        dialogueTriggered = true;
+        waitingForDialogueTrigger = false;
 
         if (dialogueController != null && !string.IsNullOrEmpty(finalDialogue))
         {

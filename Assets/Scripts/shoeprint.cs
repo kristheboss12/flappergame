@@ -14,6 +14,10 @@ public class ShoeprintPhoto : MonoBehaviour
     [TextArea] public string followupDialogue;
     public IntroDialogueManager introDialogueManager;
 
+    [Header("Audio")]
+    public AudioSource photoAudioSource;
+    public AudioClip flashSound;
+
     private bool playerIsNear = false;
     private bool hasTakenPhoto = false;
     private Collider myCollider;
@@ -94,6 +98,12 @@ public class ShoeprintPhoto : MonoBehaviour
     {
         if (whiteFlash != null)
         {
+            // 🎵 Play flash sound
+            if (photoAudioSource != null && flashSound != null)
+            {
+                photoAudioSource.PlayOneShot(flashSound);
+            }
+
             Image flashImage = whiteFlash.GetComponent<Image>();
             if (flashImage != null)
             {
@@ -101,6 +111,7 @@ public class ShoeprintPhoto : MonoBehaviour
                 flashImage.color = new Color(1f, 1f, 1f, 1f);
             }
         }
+
 
         if (photoImage != null)
         {
