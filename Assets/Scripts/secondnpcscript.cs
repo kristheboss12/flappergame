@@ -33,14 +33,7 @@ public class TriggerNextNPCSequence : MonoBehaviour
         StartCoroutine(StartSequence());
     }
 
-    void Update()
-    {
-        if (!journalOpened && Input.GetKeyDown(KeyCode.J))
-        {
-            journalOpened = true;
-            Debug.Log("📓 Journal opened.");
-        }
-    }
+
 
     public IEnumerator StartSequence()
     {
@@ -66,8 +59,9 @@ public class TriggerNextNPCSequence : MonoBehaviour
 
     void ShowButtons()
     {
-        button1.SetActive(true);
-        button2.SetActive(true);
+        // Ensure both buttons are visible
+        if (button1 != null) button1.SetActive(true);
+        if (button2 != null) button2.SetActive(true);
 
         Button btn1 = button1.GetComponent<Button>();
         Button btn2 = button2.GetComponent<Button>();
@@ -91,25 +85,19 @@ public class TriggerNextNPCSequence : MonoBehaviour
 
         if (clickedButton == requiredButton)
         {
-            if (!journalOpened)
-            {
-                Debug.Log("⛔ Please press J to open your journal first.");
-                return;
-            }
-
             correctButtonClicked = true;
 
-            button1.SetActive(false);
-            button2.SetActive(false);
-
-            Debug.Log("✅ Correct button clicked. Waiting 5 seconds...");
+            Debug.Log("✅ Required button clicked. Waiting 5 seconds...");
             StartCoroutine(DelayedFinalDialogue());
         }
         else
         {
-            Debug.Log("❌ Incorrect button clicked.");
+            // Wrong button, but it just sits there now — no messages, no effects.
         }
     }
+
+
+
 
     IEnumerator DelayedFinalDialogue()
     {
