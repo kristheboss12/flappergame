@@ -69,8 +69,27 @@ public class SecondNPCDialogueTrigger : MonoBehaviour
         if (permanentObjectToActivate != null)
         {
             permanentObjectToActivate.SetActive(true);
-            Debug.Log("Permanent object activated after photo.");
+            Debug.Log("📸 Permanent object activated after photo.");
+
+            // Manually trigger any attached sequences
+            var nextSequence = permanentObjectToActivate.GetComponent<TriggerNextNPCSequence>();
+            if (nextSequence != null)
+            {
+                StartCoroutine(nextSequence.StartSequence());
+            }
+
+            var finalDialogueOnly = permanentObjectToActivate.GetComponent<TriggerFinalDialogueOnly>();
+            if (finalDialogueOnly != null)
+            {
+                finalDialogueOnly.TriggerDialogueManually();
+            }
+
+            if (nextSequence == null && finalDialogueOnly == null)
+            {
+                Debug.LogWarning("⚠️ No trigger script found on the activated permanent object.");
+            }
         }
+
     }
 
     IEnumerator FadeOutImage(Image image, float duration)

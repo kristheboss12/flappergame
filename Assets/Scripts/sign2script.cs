@@ -148,16 +148,31 @@ public class SimplePhotoCapture : MonoBehaviour
             permanentObjectToActivate.SetActive(true);
             Debug.Log("🧩 Permanent object activated after photo.");
 
-            // Manually start the next sequence
-            TriggerNextNPCSequence nextSequence = permanentObjectToActivate.GetComponent<TriggerNextNPCSequence>();
-            if (nextSequence != null)
+            if (permanentObjectToActivate != null)
             {
-                nextSequence.StartSequence();
+                permanentObjectToActivate.SetActive(true);
+                Debug.Log("🧩 Permanent object activated after photo.");
+
+                // Try TriggerNextNPCSequence
+                var nextSequence = permanentObjectToActivate.GetComponent<TriggerNextNPCSequence>();
+                if (nextSequence != null)
+                {
+                    StartCoroutine(nextSequence.StartSequence());
+                }
+
+                var finalDialogueOnly = permanentObjectToActivate.GetComponent<TriggerFinalDialogueOnly>();
+                if (finalDialogueOnly != null)
+                {
+                    finalDialogueOnly.TriggerDialogueManually();
+                }
+
+
+                if (nextSequence == null && finalDialogueOnly == null)
+                {
+                    Debug.LogWarning("⚠️ No recognized trigger component found on the activated object.");
+                }
             }
-            else
-            {
-                Debug.LogWarning("TriggerNextNPCSequence component not found on the activated object.");
-            }
+
         }
 
         // Cleanup and disable this script
