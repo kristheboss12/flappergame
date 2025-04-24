@@ -9,7 +9,6 @@ public class ClickToLookWalkerWithMinimap : MonoBehaviour
     [Header("Movement")]
     public float moveSpeed = 5f;
     public float sprintMultiplier = 1.8f;
-    public float jumpForce = 5f;
     public float gravity = 9.81f;
 
     [Header("Mouse Look")]
@@ -109,17 +108,16 @@ public class ClickToLookWalkerWithMinimap : MonoBehaviour
 
         Vector3 move = transform.TransformDirection(moveInput.normalized) * currentSpeed;
 
-        // Gravity and jump
+        // Gravity only (no jumping)
         if (controller.isGrounded)
         {
             verticalVelocity = -1f;
-            if (Input.GetButtonDown("Jump"))
-                verticalVelocity = jumpForce;
         }
         else
         {
             verticalVelocity -= gravity * Time.deltaTime;
         }
+
 
         move.y = verticalVelocity;
         controller.Move(move * Time.deltaTime);

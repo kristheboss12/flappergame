@@ -14,6 +14,10 @@ public class DialogueController : MonoBehaviour
     public float fadeTime = 0.5f;
     [Range(0f, 1f)] public float imageMaxAlpha = 0.5f;
 
+    [Header("Continue Prompt")]
+    public GameObject continuePrompt;
+    public float pulseSpeed = 2f; // Duration of one full pulse
+
     private Coroutine currentDialogue;
     private Queue<(string, Action)> dialogueQueue = new Queue<(string, Action)>();
     private bool isPlaying = false;
@@ -46,11 +50,13 @@ public class DialogueController : MonoBehaviour
         isPlaying = false;
         currentDialogue = null;
     }
-
     IEnumerator PlayDialogue(string line, Action onComplete)
     {
         backgroundImage.gameObject.SetActive(true);
         dialogueText.gameObject.SetActive(true);
+
+        if (continuePrompt != null)
+            continuePrompt.SetActive(false);
 
         Color textColor = dialogueText.color;
         Color imageColor = backgroundImage.color;
@@ -80,7 +86,7 @@ public class DialogueController : MonoBehaviour
             yield return null;
         }
 
-        // Typewriter
+        // Typewriter effect
         for (int i = 0; i <= line.Length; i++)
         {
             dialogueText.maxVisibleCharacters = i;
@@ -88,6 +94,28 @@ public class DialogueController : MonoBehaviour
         }
 
         yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.E));
+
+        // Show and pulse the continue prompt
+        Coroutine pulse = null;
+        if (continuePrompt != null)
+        {
+            continuePrompt.SetActive(true);
+            CanvasGroup cg = continuePrompt.GetComponent<CanvasGroup>();
+            if (cg == null) cg = continuePrompt.AddComponent<CanvasGroup>();
+            pulse = StartCoroutine(PulseCanvasGroup(cg));
+        }
+
+        // Wait for player input
+        yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
+
+        // Stop pulsing and hide prompt
+        if (pulse != null) StopCoroutine(pulse);
+        if (continuePrompt != null)
+        {
+            CanvasGroup cg = continuePrompt.GetComponent<CanvasGroup>();
+            if (cg != null) cg.alpha = 0f;
+            continuePrompt.SetActive(false);
+        }
 
         // Fade out
         t = 0;
@@ -110,4 +138,21 @@ public class DialogueController : MonoBehaviour
 
         onComplete?.Invoke();
     }
+
+    IEnumerator PulseCanvasGroup(CanvasGroup cg)
+    {
+        while (true)
+        {
+            float t = 0f;
+            while (t < pulseSpeed)
+            {
+                t += Time.deltaTime;
+                float alpha = 0.5f + 0.5f * Mathf.Sin((Time.time * Mathf.PI * 2f) / pulseSpeed);
+                cg.alpha = alpha;
+                yield return null;
+            }
+        }
+    }
+
+
 }

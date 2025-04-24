@@ -14,6 +14,12 @@ public class ShoeprintPhoto : MonoBehaviour
     [TextArea] public string followupDialogue;
     public IntroDialogueManager introDialogueManager;
 
+    [Header("Post Photo Flash Message")]
+    public GameObject flashingMessage;
+    public float flashDuration = 5f;
+    public float flashInterval = 0.5f;
+
+
     [Header("Audio")]
     public AudioSource photoAudioSource;
     public AudioClip flashSound;
@@ -93,7 +99,6 @@ public class ShoeprintPhoto : MonoBehaviour
 
         StartCoroutine(PhotoSequence());
     }
-
     IEnumerator PhotoSequence()
     {
         if (whiteFlash != null)
@@ -111,7 +116,6 @@ public class ShoeprintPhoto : MonoBehaviour
                 flashImage.color = new Color(1f, 1f, 1f, 1f);
             }
         }
-
 
         if (photoImage != null)
         {
@@ -151,7 +155,16 @@ public class ShoeprintPhoto : MonoBehaviour
 
         if (dialogueController != null && !string.IsNullOrEmpty(followupDialogue))
         {
-            dialogueController.ShowDialogue(followupDialogue);
+            bool dialogueFinished = false;
+            dialogueController.ShowDialogue(followupDialogue, () => dialogueFinished = true);
+            yield return new WaitUntil(() => dialogueFinished);
+        }
+
+        // ✅ Start the flashing message AFTER the dialogue
+        if (flashingMessage != null)
+        {
+            flashingMessage.SetActive(true);
+            StartCoroutine(FlashMessage(flashingMessage, flashDuration, flashInterval));
         }
 
         if (teleportScript != null)
@@ -163,6 +176,32 @@ public class ShoeprintPhoto : MonoBehaviour
 
         Cleanup();
     }
+
+
+    IEnumerator FlashMessage(GameObject obj, float duration, float pulseSpeed)
+    {
+        float elapsed = 0f;
+
+        CanvasGroup cg = obj.GetComponent<CanvasGroup>();
+        if (cg == null)
+            cg = obj.AddComponent<CanvasGroup>();
+
+        obj.SetActive(true);
+
+        while (elapsed < duration)
+        {
+            float alpha = 0.5f + 0.5f * Mathf.Sin((elapsed / pulseSpeed) * Mathf.PI * 2f);
+            cg.alpha = alpha;
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        cg.alpha = 0f;
+        obj.SetActive(false);
+    }
+
+
+
 
     void Cleanup()
     {
