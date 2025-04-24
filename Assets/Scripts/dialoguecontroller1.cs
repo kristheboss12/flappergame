@@ -93,8 +93,6 @@ public class DialogueController : MonoBehaviour
             yield return new WaitForSeconds(typeSpeed);
         }
 
-        yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.E));
-
         // Show and pulse the continue prompt
         Coroutine pulse = null;
         if (continuePrompt != null)

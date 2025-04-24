@@ -574,11 +574,11 @@ Transform:
   m_GameObject: {fileID: 51874786}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 36.62262, y: 6.191578, z: -83.26754}
+  m_LocalPosition: {x: 7.4, y: 6.191578, z: -83.26754}
   m_LocalScale: {x: 100.10927, y: 36.759, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1229067702}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &60941025
 GameObject:
@@ -7927,11 +7927,11 @@ Transform:
   m_GameObject: {fileID: 274573520}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.1, y: 6.191578, z: -2.11}
+  m_LocalPosition: {x: -24.6, y: 6.191578, z: -47.2}
   m_LocalScale: {x: 8, y: 8, z: 8}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 1229067702}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &274573522
 MonoBehaviour:
@@ -9169,6 +9169,9 @@ MonoBehaviour:
   followupDialogue: Seems someon dropped their card on the way to the party. Perhaps
     this might lead me to the culprit.
   introDialogueManager: {fileID: 1104930388}
+  flashingMessage: {fileID: 0}
+  flashDuration: 5
+  flashInterval: 0.5
   photoAudioSource: {fileID: 383749976}
   flashSound: {fileID: 8300000, guid: dea008ae714ec5b45bbad825a19b5829, type: 3}
 --- !u!65 &383749978
@@ -10284,6 +10287,9 @@ MonoBehaviour:
     of burnt fur and flesh. The death seems unnatural. What man would do this to
     a poor creature?
   introDialogueManager: {fileID: 1104930388}
+  flashingMessage: {fileID: 0}
+  flashDuration: 5
+  flashInterval: 0.5
   photoAudioSource: {fileID: 573396018}
   flashSound: {fileID: 8300000, guid: dea008ae714ec5b45bbad825a19b5829, type: 3}
 --- !u!65 &573396020
@@ -16685,11 +16691,11 @@ Transform:
   m_GameObject: {fileID: 1331486739}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.6, y: 6.191578, z: -2.11}
+  m_LocalPosition: {x: -23.4, y: 6.191578, z: -48.41}
   m_LocalScale: {x: 20, y: 20, z: 20}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 1229067702}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1331486741
 MonoBehaviour:
@@ -21901,4 +21907,6 @@ SceneRoots:
   - {fileID: 1844492432}
   - {fileID: 1553388855}
   - {fileID: 666366179}
-  - {fileID: 1229067702}
+  - {fileID: 51874792}
+  - {fileID: 1331486740}
+  - {fileID: 274573521}
