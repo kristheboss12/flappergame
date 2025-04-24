@@ -8711,12 +8711,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueController: {fileID: 1217228564}
   dialogueLines:
-  - Hello Sir, would you know of any places serving refreshments around the city?
-  - Well, not personally, but I saw a flyer for a party with refreshments somewhere.
-  - Oh wonderful! Do you know the address of the party?
-  - 'No, but I think the poster was just over to your right. Infront of 8 Main Street. '
-  - 'Alright. Let me go and see about this poster. Maybe they are serving my stolen
-    goods. '
+  - 'Shirley: Hello Sir, would you know of any places serving refreshments around
+    the city?'
+  - 'Mysterious Man: Well, not personally, but I saw a flyer for a party with refreshments
+    somewhere.'
+  - 'Shirley: Oh wonderful! Do you know the address of the party?'
+  - 'Mysterious Man: No, but I think the poster was just over to your right. Infront
+    of 8 Main Street. '
+  - 'Shirley: Alright. Let me go and see about this poster. Maybe they are serving
+    my stolen goods. '
   nextPhotoTrigger: {fileID: 608488088}
 --- !u!1 &509674053
 GameObject:
@@ -8927,10 +8930,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogueController: {fileID: 1217228564}
-  afterGiftDialogue: 13 Main Street? but... I live at 12 Main and know for a fact
-    that there's no 13 Main Street. Let me check the card again.
-  finalDialogue: 'Hm, knock 3 times on the window of 14th. That''s interesting. Let
-    me go see. '
+  afterGiftDialogue: 'Shirley: 13 Main Street? but... I live at 12 Main and know
+    for a fact that there''s no 13 Main Street. Let me check the card again.'
+  finalDialogue: 'Shirley: Hm, knock 3 times on the window of 14th. That''s interesting.
+    Let me go see. '
   button1: {fileID: 262114016}
   button2: {fileID: 335683048}
   requiredButton: {fileID: 262114016}
@@ -10471,8 +10474,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: a83bc09b4e5d608459d652920b604349, type: 2}
-  m_sharedMaterial: {fileID: 8254843667401261222, guid: a83bc09b4e5d608459d652920b604349, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 5d33d5a0d60d92642a3bbde0f67e86ea, type: 2}
+  m_sharedMaterial: {fileID: 5760869513116299116, guid: 5d33d5a0d60d92642a3bbde0f67e86ea, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -10496,8 +10499,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40
-  m_fontSizeBase: 40
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -10862,17 +10865,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueController: {fileID: 1217228564}
   dialogueLines:
-  - Hello there Raymond. Curious to know the man who's taken my role as supplier
-    for the party?
-  - 'Listen Shirley, I really am sorry, but his deals are cheaper. Can''t imagine
-    where he gets his stock selling it like that. '
-  - 'Just tell me who he is! What, is that his card in your hand? '
-  - 'Well, Shirley, I do like you, so let me help you out. Yes, this is his card.
-    Goes by "J.M." Haven''t seen him before though. '
-  - '...J.M. you say? '
-  - What? Do you know something I don't Missy?
-  - No no no. Just thinking out loud. Can I take a photo of the card?
-  - 'Just take it for all I care. Had about 20 of em stuffed in the stock we got. '
+  - 'Shirley: Hello there Raymond. Curious to know the man who''s taken my role as
+    supplier for the party?'
+  - 'Raymond: Listen Shirley, I really am sorry, but his deals are cheaper. Can''t
+    imagine where he gets his stock selling it like that. '
+  - 'Shirley: Just tell me who he is! What, is that his card in your hand? '
+  - 'Raymond: Well, Shirley, I do like you, so let me help you out. Yes, this is
+    his card. Goes by "J.M." Haven''t seen him before though. '
+  - 'Shirley: ...J.M. you say? '
+  - 'Raymond: What? Do you know something I don''t Missy?'
+  - 'Shirley: No no no. Just thinking out loud. Can I take a photo of the card?'
+  - 'Raymond: Just take it for all I care. Had about 20 of em stuffed in the stock
+    we got. '
   whiteFlash: {fileID: 564174007}
   photoImage: {fileID: 664818006}
   permanentObjectToActivate: {fileID: 534249344}
@@ -11195,6 +11199,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 589468431}
+  - {fileID: 1850238437}
+  - {fileID: 1232286048}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -11548,11 +11554,14 @@ MonoBehaviour:
   permanentObjectToActivate: {fileID: 11756360}
   dialogueController: {fileID: 1217228564}
   teleportScript: {fileID: 890797482}
-  followupDialogue: "Upon inspection, these look to belong to an adult male, with
-    the initials JM written on them. Of course, a man, Men can never do anything
+  followupDialogue: "Shirley: Upon inspection, these look to belong to an adult male,
+    with the initials JM written on them. Of course, a man, Men can never do anything
     for themselves, always a need to steal off  of a woman. Anyhow, it seems to lead
     outdoors...\r\r\n"
   introDialogueManager: {fileID: 1104930388}
+  flashingMessage: {fileID: 1850238436}
+  flashDuration: 5
+  flashInterval: 2
   photoAudioSource: {fileID: 767454682}
   flashSound: {fileID: 8300000, guid: dea008ae714ec5b45bbad825a19b5829, type: 3}
 --- !u!82 &767454682
@@ -12751,7 +12760,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 6
   sprintMultiplier: 2
-  jumpForce: 5
   gravity: 9.81
   playerCamera: {fileID: 963194228}
   mouseSmoothTime: 0.03
@@ -13901,9 +13909,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96b638c4e74a72048bc8112ba8b695c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogueLine: "Well, these parties certainly do go into the late night hour\u2026
-    Now that I\u2019ve cleaned up, I should make sure the cellar is secure before
-    I leave\u2026"
+  dialogueLine: "Shirley: Well, these parties certainly do go into the late night
+    hour\u2026 Now that I\u2019ve cleaned up, I should make sure the cellar is secure
+    before I leave\u2026"
   manager: {fileID: 1104930388}
 --- !u!65 &1045887043
 BoxCollider:
@@ -14646,6 +14654,8 @@ MonoBehaviour:
   holdTime: 2
   fadeTime: 0.5
   imageMaxAlpha: 0.5
+  continuePrompt: {fileID: 1232286045}
+  pulseSpeed: 2
 --- !u!1 &1217947103
 GameObject:
   m_ObjectHideFlags: 0
@@ -14769,6 +14779,140 @@ RectTransform:
   m_AnchoredPosition: {x: 12, y: 93.8}
   m_SizeDelta: {x: 737, y: 414.8}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1232286045
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1232286048}
+  - component: {fileID: 1232286047}
+  - component: {fileID: 1232286046}
+  m_Layer: 5
+  m_Name: Text (TMP) (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &1232286046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1232286045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: Press Space
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: e0199b1ade6c0ec438ee76f3ced7aa81, type: 2}
+  m_sharedMaterial: {fileID: 501553155875166578, guid: e0199b1ade6c0ec438ee76f3ced7aa81, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4291019715
+  m_fontColor: {r: 0.7660377, g: 0.7660377, b: 0.7660377, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 25
+  m_fontSizeBase: 25
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 1
+  m_VerticalAlignment: 256
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: -288.53625, y: 0, z: 168.44708, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &1232286047
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1232286045}
+  m_CullTransparentMesh: 1
+--- !u!224 &1232286048
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1232286045}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 743953260}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 824, y: -213}
+  m_SizeDelta: {x: 200, y: 50}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1233457498
 GameObject:
   m_ObjectHideFlags: 0
@@ -14814,9 +14958,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96b638c4e74a72048bc8112ba8b695c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogueLine: "Muddy footsteps? This cellar's certainly becoming a crime scene.
-    Well, since I can't get the fuzz on this case, I guess I\u2019ll outta be my
-    own detective. Let me snap a photo."
+  dialogueLine: "Shirley: Muddy footsteps? This cellar's certainly becoming a crime
+    scene. Well, since I can't get the fuzz on this case, I guess I\u2019ll outta
+    be my own detective. Let me snap a photo."
   manager: {fileID: 1104930388}
 --- !u!65 &1233457501
 BoxCollider:
@@ -18133,6 +18277,140 @@ Transform:
   - {fileID: 1470228805}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1850238436
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1850238437}
+  - component: {fileID: 1850238439}
+  - component: {fileID: 1850238438}
+  m_Layer: 5
+  m_Name: Text (TMP)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1850238437
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1850238436}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 743953260}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 642, y: 298}
+  m_SizeDelta: {x: 200, y: 50}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1850238438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1850238436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: Press J to open Journal
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: e0199b1ade6c0ec438ee76f3ced7aa81, type: 2}
+  m_sharedMaterial: {fileID: 501553155875166578, guid: e0199b1ade6c0ec438ee76f3ced7aa81, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4291019715
+  m_fontColor: {r: 0.7660377, g: 0.7660377, b: 0.7660377, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 25
+  m_fontSizeBase: 25
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 1
+  m_VerticalAlignment: 256
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: -288.53625, y: 0, z: 168.44708, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &1850238439
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1850238436}
+  m_CullTransparentMesh: 1
 --- !u!1 &1883564356
 GameObject:
   m_ObjectHideFlags: 0
@@ -18186,8 +18464,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogueController: {fileID: 1217228564}
-  finalDialogue: 'Let me go check out the address on the poster and see if anyone
-    there knows where my supply has taken off to. '
+  finalDialogue: 'Shirley: Let me go check out the address on the poster and see
+    if anyone there knows where my supply has taken off to. '
 --- !u!114 &1883564359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19078,9 +19356,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96b638c4e74a72048bc8112ba8b695c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogueLine: "M-my liquid gold! Now, whoever thought they could dare mess with
-    me has hell to pay. My goodness, isn\u2019t this place just a mess\u2026 Who
-    would do such a thing?\r\n"
+  dialogueLine: "Shirley: M-my liquid gold! Now, whoever thought they could dare
+    mess with me has hell to pay. My goodness, isn\u2019t this place just a mess\u2026
+    Who would do such a thing?\r\n"
   manager: {fileID: 1104930388}
 --- !u!65 &2014614926
 BoxCollider:
