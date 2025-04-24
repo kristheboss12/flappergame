@@ -50,13 +50,11 @@ public class DialogueController : MonoBehaviour
         isPlaying = false;
         currentDialogue = null;
     }
+
     IEnumerator PlayDialogue(string line, Action onComplete)
     {
         backgroundImage.gameObject.SetActive(true);
         dialogueText.gameObject.SetActive(true);
-
-        if (continuePrompt != null)
-            continuePrompt.SetActive(false);
 
         Color textColor = dialogueText.color;
         Color imageColor = backgroundImage.color;
@@ -93,8 +91,6 @@ public class DialogueController : MonoBehaviour
             yield return new WaitForSeconds(typeSpeed);
         }
 
-        yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.E));
-
         // Show and pulse the continue prompt
         Coroutine pulse = null;
         if (continuePrompt != null)
@@ -105,7 +101,7 @@ public class DialogueController : MonoBehaviour
             pulse = StartCoroutine(PulseCanvasGroup(cg));
         }
 
-        // Wait for player input
+        // Wait for player input (SPACE)
         yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
 
         // Stop pulsing and hide prompt
@@ -139,6 +135,7 @@ public class DialogueController : MonoBehaviour
         onComplete?.Invoke();
     }
 
+
     IEnumerator PulseCanvasGroup(CanvasGroup cg)
     {
         while (true)
@@ -153,6 +150,5 @@ public class DialogueController : MonoBehaviour
             }
         }
     }
+} // END of class
 
-
-}
